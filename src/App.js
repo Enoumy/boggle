@@ -1,7 +1,12 @@
 import React from 'react';
 import InputItem from './Input.js';
 import DenseAppBar from './DenseAppBar.js';
+import SquareGrid from './Grid.js';
 import './App.css';
+
+const test_grid = [['a', 'b', 'qu'],
+                   ['e', 'c', 'k'],
+                   ['qu', 'a', 'm']];
 
 function App() {
   const buttonList = [];
@@ -11,9 +16,7 @@ function App() {
   return (
     <div>
       <DenseAppBar />
-      <h1>Minecraft Hunger Games Fishing Trickshot Montage #7</h1>
-      <p>Test</p>
-      {buttonList}
+      <SquareGrid data={'Q'} n={5}/>
     </div>
   );
 }
