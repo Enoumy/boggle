@@ -1,24 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
+import InputItem from './Input.js';
+import DenseAppBar from './DenseAppBar.js';
 import './App.css';
 
 function App() {
+  const buttonList = [];
+  for (let i = 0; i < 5; i++)
+    buttonList.push(<InputItem />);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <DenseAppBar />
+      <h1>Minecraft Hunger Games Fishing Trickshot Montage #7</h1>
+      <p>Test</p>
+      {buttonList}
     </div>
   );
 }
