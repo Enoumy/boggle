@@ -8,11 +8,11 @@ import FontDownloadIcon from '@material-ui/icons/FontDownload';
 
 const styles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
 function DenseAppBar() {
@@ -22,7 +22,11 @@ function DenseAppBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <ToolBar variant="dense">
-          <IconButton edge="start" className={classes.menuButton} color="inherit">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+          >
             <FontDownloadIcon />
           </IconButton>
           <Typography variant="h6" color="inherit">
