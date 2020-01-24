@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 function SquareGrid(props) {
   const classes = useStyles();
 
-  function tile(props) {
+  function Tile(props) {
     return (
       <Paper className={classes.tile} elevation={1}>
         <p style={{ marginTop: 6 }}>{props.data}</p>
@@ -40,12 +40,13 @@ function SquareGrid(props) {
 
   function FormRow(props) {
     const cells = [];
-    for (let i = 0; i < props.n; i++) cells.push(tile(props));
+    for (let i = 0; i < props.n; i++) cells.push(<Tile data={props.data[i]} />);
     return <Grid container> {cells} </Grid>;
   }
 
   const rows = [];
-  for (let i = 0; i < props.n; i++) rows.push(FormRow(props));
+  for (let i = 0; i < props.data.length; i++)
+    rows.push(<FormRow n={props.data[i].length} data={props.data[i]} />);
 
   return (
     <Grid

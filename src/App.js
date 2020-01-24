@@ -13,7 +13,7 @@ function App() {
   return (
     <div>
       <DenseAppBar />
-      <SquareGrid data={'Qu'} n={5} />
+      <SquareGrid data={test_grid} />
     </div>
   );
 }
