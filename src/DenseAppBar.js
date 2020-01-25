@@ -20,7 +20,7 @@ function DenseAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <ToolBar variant="dense">
           <IconButton
             edge="start"

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: 250,
-    marginTop: 60,
+    marginTop: 12,
     marginBottom: 42,
     margin: '0 auto',
   },
@@ -15,33 +15,39 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SizeSelector(props) {
-  const defaultValue = 4;
-  const [gridSize, setGridSize] = useState(4);
-  const classes = useStyles();
+function secondsToTimeString(seconds) {
+  let out = '';
+  if (seconds >= 60) out = '' + Math.floor(seconds / 60) + ' minutes ' + out;
 
-  const sendGridSize = size => {
-    props.parentCallback(size);
+  out = out + (seconds % 60) + ' seconds';
+  return out;
+}
+
+function TimingOption(props) {
+  const classes = useStyles();
+  const [time, setTime] = useState(60);
+
+  const sendTime = newTime => {
+    props.parentCallback(newTime);
   };
 
   return (
     <div className={classes.root}>
       <div className={classes.margin}>
         <Typography id="discrete-slider-small-steps" gutterBottom>
-          Grid Size: {gridSize}x{gridSize}
+          Time: {secondsToTimeString(time)}
         </Typography>
         <Slider
-          defaultValue={defaultValue}
+          defaultValue={60}
           aria-labelledby="discrete-slider"
           valueLabelDisplay="auto"
           step={1}
-          marks
-          min={1}
-          max={10}
+          min={10}
+          max={300}
           onChangeCommitted={(event, value) => {
-            if (value !== gridSize) {
-              setGridSize(value);
-              sendGridSize(value);
+            if (value !== time) {
+              setTime(value);
+              sendTime(value);
             }
           }}
         />
@@ -50,4 +56,4 @@ function SizeSelector(props) {
   );
 }
 
-export default SizeSelector;
+export default TimingOption;
