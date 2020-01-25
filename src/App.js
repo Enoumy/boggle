@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DenseAppBar from './DenseAppBar.js';
 import SizeSelector from './SizeSelector.js';
 import SquareGrid from './Grid.js';
+import CircularIndeterminate from './Loading.js';
 import './App.css';
 
 const characters = 'abcdefghijklmnopqrstuvwxyz';

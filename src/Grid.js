@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     verticalAlign: 'middle',
     color: theme.palette.text.secondary,
+    userSelect: 'none',
   },
 }));
 

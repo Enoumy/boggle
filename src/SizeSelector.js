@@ -38,7 +38,7 @@ function SizeSelector(props) {
           marks
           min={1}
           max={10}
-          onChange={(event, value) => {
+          onChangeCommitted={(event, value) => {
             if (value !== gridSize) {
               setGridSize(value);
               sendGridSize(value);
