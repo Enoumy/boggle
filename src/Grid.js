@@ -54,6 +54,7 @@ function SquareGrid(props) {
       direction="column"
       justify="space-between"
       alignItems="center"
+      style={{ marginTop: 12, marginBottom: 12 }}
     >
       <Paper style={{ width: 'fit-content' }} justify="center" elevation={2}>
         {rows}
