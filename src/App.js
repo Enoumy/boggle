@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import InputItem from './Input.js';
 import DenseAppBar from './DenseAppBar.js';
 import SizeSelector from './SizeSelector.js';
 import SquareGrid from './Grid.js';
