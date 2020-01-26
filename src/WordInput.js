@@ -21,6 +21,8 @@ function WordInput(props) {
     props.onEnter(word);
   };
 
+  if (!props.active) return <div></div>;
+
   return (
     <div className={classes.root}>
       <TextField

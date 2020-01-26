@@ -18,9 +18,13 @@ function StartButton(props) {
     <div className={classes.root}>
       <Button
         variant="contained"
-        color={props.started ? 'secondary' : 'primary'}
+        color={props.state === 'active' ? 'secondary' : 'primary'}
+        onClick={() => {
+          props.onClick();
+        }}
+        disabled={props.state === 'loading'}
       >
-        {props.started ? 'Stop' : 'Start'}
+        {props.state === 'active' ? 'Stop' : 'Start'}
       </Button>
     </div>
   );

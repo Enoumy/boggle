@@ -6,9 +6,13 @@ import CircularIndeterminate from './Loading.js';
 import TimingOption from './TimingOption.js';
 import StartButton from './StartButton';
 import WordInput from './WordInput';
+import WordList from './WordList';
+import Grid from '@material-ui/core/Grid';
 import './App.css';
 
 const dictionary = require('./full-wordlist.json');
+
+const words = ['hello', 'there', 'general', 'kenobi', 'ds'];
 
 /** Returns a randomly generated sizexsize grid.
  * @param {number} size - Size of square matrix.
@@ -38,7 +42,10 @@ function generateRandomBoggleBoard(size) {
 
 function App() {
   const [board, setBoard] = useState(generateRandomBoggleBoard(4));
-  const [started, setStarted] = useState(true);
+  const [gridSize, setGridSize] = useState(4);
+  const [gameState, setGameState] = useState('firstTime');
+  const [wordsFound, setWordsFound] = useState([]);
+  const [wordInputActive, setWordInputActive] = useState(false);
 
   return (
     <div>
@@ -49,13 +56,57 @@ function App() {
         }}
       />
       <TimingOption parentCallback={time => {}} />
-      <StartButton started={started} />
-      <SquareGrid data={board} />
-      <WordInput
-        onEnter={word => {
-          console.log(word);
+      <StartButton
+        onClick={() => {
+          if (gameState === 'active') {
+            setGameState('stopped');
+          } else {
+            setGameState('loading');
+          }
         }}
+        state={gameState}
       />
+      {gameState === 'loading' ? (
+        <CircularIndeterminate />
+      ) : (
+        <div>
+          {['active', 'stopped'].includes(gameState) ? (
+            <div>
+              <SquareGrid data={board} />
+              <WordInput
+                onEnter={word => {
+                  console.log(word);
+                  setWordsFound([word, ...wordsFound]);
+                }}
+                active={gameState === 'active'}
+              />
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+                spacing={2}
+              >
+                <Grid item>
+                  <WordList
+                    title={'Words found: ' + wordsFound.length}
+                    words={wordsFound}
+                  />
+                </Grid>
+                {gameState === 'stopped' ? (
+                  <Grid item>
+                    <WordList title={'Remaining Words'} words={[]} />
+                  </Grid>
+                ) : (
+                  <div></div>
+                )}
+              </Grid>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
