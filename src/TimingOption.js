@@ -28,7 +28,6 @@ function TimingOption(props) {
   const [time, setTime] = useState(60);
 
   const sendTime = newTime => {
-    console.log('Sending', newTime);
     props.parentCallback(newTime);
   };
 

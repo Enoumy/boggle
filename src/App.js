@@ -9,6 +9,9 @@ import WordInput from './WordInput';
 import WordList from './WordList';
 import Timer from './Timer.js';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import './App.css';
 const boggle_solver = require('./boggle_solver');
 
@@ -50,9 +53,12 @@ function App() {
   const [gridSize, setGridSize] = useState(4);
   const [gameState, setGameState] = useState('firstTime');
   const [wordsFound, setWordsFound] = useState([]);
+  const [[wordsFoundSet], setWordsFoundsSet] = useState([new Set()]);
   const [[remainingSolutions], setRemainingSolutions] = useState([new Set()]);
   const [remainingSolutionsList, setRemainingSolutionsList] = useState([]);
   const [startTime, setStartTime] = useState(60);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   function startGame() {
     setGameState('loading');
@@ -65,6 +71,7 @@ function App() {
     lowerCaseStringArray(solutions);
     setRemainingSolutions([new Set(solutions)]);
     setWordsFound([]);
+    setWordsFoundsSet([new Set()]);
     setGameState('active');
   }
 
@@ -72,6 +79,16 @@ function App() {
     setGameState('stopped');
     setRemainingSolutionsList(Array.from(remainingSolutions));
   }
+
+  const handleClick = word => {
+    setMessage('Word already found: ' + word);
+    setNotificationOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setNotificationOpen(false);
+  };
 
   return (
     <div>
@@ -83,7 +100,6 @@ function App() {
       />
       <TimingOption
         parentCallback={time => {
-          console.log('Receinving', time);
           setStartTime(time);
         }}
       />
@@ -116,9 +132,12 @@ function App() {
                   word = word.toLowerCase().trim();
                   console.log(word);
                   if (remainingSolutions.has(word)) {
+                    setWordsFoundsSet([wordsFoundSet.add(word)]);
                     setWordsFound([word, ...wordsFound]);
                     remainingSolutions.delete(word);
                     setRemainingSolutions([remainingSolutions]);
+                  } else if (wordsFoundSet.has(word)) {
+                    handleClick(word);
                   }
                 }}
                 active={gameState === 'active'}
@@ -155,6 +174,25 @@ function App() {
           )}
         </div>
       )}
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={notificationOpen}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message={message}
+        action={
+          <React.Fragment>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      ></Snackbar>
     </div>
   );
 }
