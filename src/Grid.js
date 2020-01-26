@@ -28,22 +28,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SquareGrid(props) {
+function Tile(props) {
   const classes = useStyles();
 
-  function Tile(props) {
-    return (
-      <Paper className={classes.tile} elevation={1}>
-        <p style={{ marginTop: 6 }}>{props.data}</p>
-      </Paper>
-    );
-  }
+  return (
+    <Paper className={classes.tile} elevation={1}>
+      <p style={{ marginTop: 6 }}>{props.data}</p>
+    </Paper>
+  );
+}
 
-  function FormRow(props) {
-    const cells = [];
-    for (let i = 0; i < props.n; i++) cells.push(<Tile data={props.data[i]} />);
-    return <Grid container> {cells} </Grid>;
-  }
+function FormRow(props) {
+  const cells = [];
+  for (let i = 0; i < props.n; i++) cells.push(<Tile data={props.data[i]} />);
+  return <Grid container> {cells} </Grid>;
+}
+
+function SquareGrid(props) {
+  const classes = useStyles();
 
   const rows = [];
   for (let i = 0; i < props.data.length; i++)

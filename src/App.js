@@ -7,13 +7,12 @@ import TimingOption from './TimingOption.js';
 import StartButton from './StartButton';
 import WordInput from './WordInput';
 import WordList from './WordList';
+import Timer from './Timer.js';
 import Grid from '@material-ui/core/Grid';
 import './App.css';
 const boggle_solver = require('./boggle_solver');
 
 const dictionary = require('./full-wordlist.json');
-
-const words = ['hello', 'there', 'general', 'kenobi', 'ds'];
 
 /** Returns a randomly generated sizexsize grid.
  * @param {number} size - Size of square matrix.
@@ -51,9 +50,28 @@ function App() {
   const [gridSize, setGridSize] = useState(4);
   const [gameState, setGameState] = useState('firstTime');
   const [wordsFound, setWordsFound] = useState([]);
-  const [wordInputActive, setWordInputActive] = useState(false);
   const [[remainingSolutions], setRemainingSolutions] = useState([new Set()]);
   const [remainingSolutionsList, setRemainingSolutionsList] = useState([]);
+  const [startTime, setStartTime] = useState(60);
+
+  function startGame() {
+    setGameState('loading');
+    let newBoard = generateRandomBoggleBoard(gridSize);
+    setBoard(newBoard);
+    let solutions = boggle_solver.findAllSolutions(
+      newBoard,
+      dictionary['words']
+    );
+    lowerCaseStringArray(solutions);
+    setRemainingSolutions([new Set(solutions)]);
+    setWordsFound([]);
+    setGameState('active');
+  }
+
+  function stopGame() {
+    setGameState('stopped');
+    setRemainingSolutionsList(Array.from(remainingSolutions));
+  }
 
   return (
     <div>
@@ -63,31 +81,28 @@ function App() {
           setGridSize(gridSize);
         }}
       />
-      <TimingOption parentCallback={time => {}} />
+      <TimingOption
+        parentCallback={time => {
+          console.log('Receinving', time);
+          setStartTime(time);
+        }}
+      />
       <StartButton
         onClick={() => {
           if (gameState === 'active') {
-            setGameState('stopped');
-            setRemainingSolutionsList(Array.from(remainingSolutions));
+            stopGame();
           } else {
-            setGameState('loading');
-            let newBoard = generateRandomBoggleBoard(gridSize);
-            setBoard(newBoard);
-            console.log(newBoard);
-            let solutions = boggle_solver.findAllSolutions(
-              newBoard,
-              dictionary['words']
-            );
-            lowerCaseStringArray(solutions);
-            console.log(solutions);
-            let solutionsSet = new Set(solutions);
-            setRemainingSolutions([solutionsSet]);
-            setWordsFound([]);
-            setGameState('active');
-            console.log(solutionsSet);
+            startGame();
           }
         }}
         state={gameState}
+      />
+      <Timer
+        startTime={startTime}
+        onTimerEnd={() => {
+          stopGame();
+        }}
+        gameState={gameState}
       />
       {gameState === 'loading' ? (
         <CircularIndeterminate />
