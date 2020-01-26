@@ -9,6 +9,7 @@ import WordInput from './WordInput';
 import WordList from './WordList';
 import Grid from '@material-ui/core/Grid';
 import './App.css';
+const boggle_solver = require('./boggle_solver');
 
 const dictionary = require('./full-wordlist.json');
 
@@ -40,19 +41,26 @@ function generateRandomBoggleBoard(size) {
   return board;
 }
 
+function lowerCaseStringArray(stringArray) {
+  for (let i = 0; i < stringArray.length; i++)
+    stringArray[i] = stringArray[i].toLowerCase();
+}
+
 function App() {
   const [board, setBoard] = useState(generateRandomBoggleBoard(4));
   const [gridSize, setGridSize] = useState(4);
   const [gameState, setGameState] = useState('firstTime');
   const [wordsFound, setWordsFound] = useState([]);
   const [wordInputActive, setWordInputActive] = useState(false);
+  const [[remainingSolutions], setRemainingSolutions] = useState([new Set()]);
+  const [remainingSolutionsList, setRemainingSolutionsList] = useState([]);
 
   return (
     <div>
       <DenseAppBar />
       <SizeSelector
         parentCallback={gridSize => {
-          setBoard(generateRandomBoggleBoard(gridSize));
+          setGridSize(gridSize);
         }}
       />
       <TimingOption parentCallback={time => {}} />
@@ -60,8 +68,23 @@ function App() {
         onClick={() => {
           if (gameState === 'active') {
             setGameState('stopped');
+            setRemainingSolutionsList(Array.from(remainingSolutions));
           } else {
             setGameState('loading');
+            let newBoard = generateRandomBoggleBoard(gridSize);
+            setBoard(newBoard);
+            console.log(newBoard);
+            let solutions = boggle_solver.findAllSolutions(
+              newBoard,
+              dictionary['words']
+            );
+            lowerCaseStringArray(solutions);
+            console.log(solutions);
+            let solutionsSet = new Set(solutions);
+            setRemainingSolutions([solutionsSet]);
+            setWordsFound([]);
+            setGameState('active');
+            console.log(solutionsSet);
           }
         }}
         state={gameState}
@@ -75,8 +98,13 @@ function App() {
               <SquareGrid data={board} />
               <WordInput
                 onEnter={word => {
+                  word = word.toLowerCase().trim();
                   console.log(word);
-                  setWordsFound([word, ...wordsFound]);
+                  if (remainingSolutions.has(word)) {
+                    setWordsFound([word, ...wordsFound]);
+                    remainingSolutions.delete(word);
+                    setRemainingSolutions([remainingSolutions]);
+                  }
                 }}
                 active={gameState === 'active'}
               />
@@ -95,7 +123,12 @@ function App() {
                 </Grid>
                 {gameState === 'stopped' ? (
                   <Grid item>
-                    <WordList title={'Remaining Words'} words={[]} />
+                    <WordList
+                      title={
+                        'Remaining Words: ' + remainingSolutionsList.length
+                      }
+                      words={remainingSolutionsList}
+                    />
                   </Grid>
                 ) : (
                   <div></div>
