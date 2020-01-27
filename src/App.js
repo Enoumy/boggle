@@ -9,9 +9,7 @@ import WordInput from './WordInput';
 import WordList from './WordList';
 import Timer from './Timer.js';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import MuiAlert from '@material-ui/lab/Alert';
+import Notification from './Notification.js';
 import './App.css';
 const boggle_solver = require('./boggle_solver');
 
@@ -46,10 +44,6 @@ function generateRandomBoggleBoard(size) {
 function lowerCaseStringArray(stringArray) {
   for (let i = 0; i < stringArray.length; i++)
     stringArray[i] = stringArray[i].toLowerCase();
-}
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 function App() {
@@ -178,14 +172,12 @@ function App() {
           )}
         </div>
       )}
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        open={notificationOpen}
-        autoHideDuration={2000}
-        onClose={handleClose}
-      >
-        <Alert severity={severity}>{message}</Alert>
-      </Snackbar>
+      <Notification
+        notificationOpen={notificationOpen}
+        handleClose={handleClose}
+        severity={severity}
+        message={message}
+      />
     </div>
   );
 }
