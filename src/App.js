@@ -11,7 +11,6 @@ import Timer from './Timer.js';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import MuiAlert from '@material-ui/lab/Alert';
 import './App.css';
 const boggle_solver = require('./boggle_solver');
