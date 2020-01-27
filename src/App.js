@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import './App.css';
 const boggle_solver = require('./boggle_solver');
 
@@ -48,6 +49,10 @@ function lowerCaseStringArray(stringArray) {
     stringArray[i] = stringArray[i].toLowerCase();
 }
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function App() {
   const [board, setBoard] = useState(generateRandomBoggleBoard(4));
   const [gridSize, setGridSize] = useState(4);
@@ -59,8 +64,9 @@ function App() {
   const [startTime, setStartTime] = useState(60);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
 
-  function startGame() {
+  const startGame = () => {
     setGameState('loading');
     let newBoard = generateRandomBoggleBoard(gridSize);
     setBoard(newBoard);
@@ -73,21 +79,37 @@ function App() {
     setWordsFound([]);
     setWordsFoundsSet([new Set()]);
     setGameState('active');
-  }
+  };
 
-  function stopGame() {
+  const stopGame = () => {
     setGameState('stopped');
     setRemainingSolutionsList(Array.from(remainingSolutions));
-  }
+  };
 
-  const handleClick = word => {
-    setMessage('Word already found: ' + word);
+  const handleClick = msg => {
+    setMessage(msg);
     setNotificationOpen(true);
   };
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setNotificationOpen(false);
+  };
+
+  const onEnter = word => {
+    word = word.toLowerCase().trim();
+    console.log(word);
+    if (remainingSolutions.has(word)) {
+      setWordsFoundsSet([wordsFoundSet.add(word)]);
+      setWordsFound([word, ...wordsFound]);
+      remainingSolutions.delete(word);
+      setRemainingSolutions([remainingSolutions]);
+      setSeverity('success');
+      handleClick("Nice! You found '" + word + "'");
+    } else if (wordsFoundSet.has(word)) {
+      setSeverity('warning');
+      handleClick('Word already found: ' + word);
+    }
   };
 
   return (
@@ -105,11 +127,8 @@ function App() {
       />
       <StartButton
         onClick={() => {
-          if (gameState === 'active') {
-            stopGame();
-          } else {
-            startGame();
-          }
+          if (gameState === 'active') stopGame();
+          else startGame();
         }}
         state={gameState}
       />
@@ -127,21 +146,7 @@ function App() {
           {['active', 'stopped'].includes(gameState) ? (
             <div>
               <SquareGrid data={board} />
-              <WordInput
-                onEnter={word => {
-                  word = word.toLowerCase().trim();
-                  console.log(word);
-                  if (remainingSolutions.has(word)) {
-                    setWordsFoundsSet([wordsFoundSet.add(word)]);
-                    setWordsFound([word, ...wordsFound]);
-                    remainingSolutions.delete(word);
-                    setRemainingSolutions([remainingSolutions]);
-                  } else if (wordsFoundSet.has(word)) {
-                    handleClick(word);
-                  }
-                }}
-                active={gameState === 'active'}
-              />
+              <WordInput onEnter={onEnter} active={gameState === 'active'} />
               <Grid
                 container
                 direction="row"
@@ -179,20 +184,9 @@ function App() {
         open={notificationOpen}
         autoHideDuration={2000}
         onClose={handleClose}
-        message={message}
-        action={
-          <React.Fragment>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleClose}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
-        }
-      ></Snackbar>
+      >
+        <Alert severity={severity}>{message}</Alert>
+      </Snackbar>
     </div>
   );
 }
