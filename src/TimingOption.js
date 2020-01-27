@@ -41,7 +41,7 @@ function TimingOption(props) {
           defaultValue={60}
           aria-labelledby="discrete-slider"
           valueLabelDisplay="auto"
-          step={1}
+          step={5}
           min={10}
           max={300}
           onChangeCommitted={(event, value) => {
