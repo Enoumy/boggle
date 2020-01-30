@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import DenseAppBar from './DenseAppBar.js';
-import SizeSelector from './SizeSelector.js';
-import SquareGrid from './Grid.js';
 import CircularIndeterminate from './Loading.js';
-import TimingOption from './TimingOption.js';
-import StartButton from './StartButton';
-import WordInput from './WordInput';
-import WordList from './WordList';
-import Timer from './Timer.js';
+import DenseAppBar from './DenseAppBar.js';
 import Grid from '@material-ui/core/Grid';
 import Notification from './Notification.js';
-import './App.css';
+import SizeSelector from './SizeSelector.js';
+import StartButton from './StartButton';
+import SquareGrid from './Grid.js';
+import Timer from './Timer.js';
+import TimingOption from './TimingOption.js';
+import WordInput from './WordInput';
+import WordList from './WordList';
 const boggle_solver = require('./boggle_solver');
-
-const dictionary = require('./full-wordlist.json');
+const dictionary = require('./full-wordlist.json')['words'];
 
 /** Returns a randomly generated sizexsize grid.
  * @param {number} size - Size of square matrix.
@@ -63,10 +61,7 @@ function App() {
     setGameState('loading');
     let newBoard = generateRandomBoggleBoard(gridSize);
     setBoard(newBoard);
-    let solutions = boggle_solver.findAllSolutions(
-      newBoard,
-      dictionary['words']
-    );
+    let solutions = boggle_solver.findAllSolutions(newBoard, dictionary);
     lowerCaseStringArray(solutions);
     setRemainingSolutions([new Set(solutions)]);
     setWordsFound([]);
