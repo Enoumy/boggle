@@ -22,17 +22,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function createListItem(str) {
+function createListItem(str, key) {
   return (
-    <ListItem>
+    <ListItem key={key}>
       <ListItemText primary={str} />
     </ListItem>
   );
 }
 
-function createListItems(lst) {
+function createListItems(lst, title) {
   let listItems = [];
-  for (let i = 0; i < lst.length; i++) listItems.push(createListItem(lst[i]));
+  for (let i = 0; i < lst.length; i++)
+    listItems.push(createListItem(lst[i], title + '_list_item_' + 1));
   return listItems;
 }
 
@@ -51,7 +52,7 @@ function WordList(props) {
         <Typography variant="h6" className={classes.title}>
           {props.title}
         </Typography>
-        <List>{createListItems(props.words)}</List>
+        <List>{createListItems(props.words, props.title)}</List>
       </Paper>
     </Grid>
   );

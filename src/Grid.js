@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Tile from './Tile.js';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,26 +18,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
     margin: 10,
   },
-  tile: {
-    margin: 5,
-    width: 30,
-    height: 30,
-    textAlign: 'center',
-    verticalAlign: 'middle',
-    color: theme.palette.text.secondary,
-    userSelect: 'none',
-  },
 }));
-
-function Tile(props) {
-  const classes = useStyles();
-
-  return (
-    <Paper className={classes.tile} elevation={1}>
-      <p style={{ marginTop: 6 }}>{props.data}</p>
-    </Paper>
-  );
-}
 
 function FormRow(props) {
   const cells = [];

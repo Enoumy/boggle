@@ -10,7 +10,7 @@ import Timer from './Timer.js';
 import TimingOption from './TimingOption.js';
 import WordInput from './WordInput';
 import WordList from './WordList';
-const boggle_solver = require('./boggle_solver');
+import { findAllSolutions } from './boggle_solver.js';
 const dictionary = require('./full-wordlist.json')['words'];
 
 /** Returns a randomly generated sizexsize grid.
@@ -61,7 +61,7 @@ function App() {
     setGameState('loading');
     let newBoard = generateRandomBoggleBoard(gridSize);
     setBoard(newBoard);
-    let solutions = boggle_solver.findAllSolutions(newBoard, dictionary);
+    let solutions = findAllSolutions(newBoard, dictionary);
     lowerCaseStringArray(solutions);
     setRemainingSolutions([new Set(solutions)]);
     setWordsFound([]);
