@@ -1,46 +1,7 @@
-/*import React, { useState, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-
-function fancyTimeFormat(time) {
-  var out = '';
-  var minutes = Math.floor((time % 3600) / 60);
-  var seconds = Math.floor(time % 60);
-
-  out += '' + minutes + ':' + (seconds < 10 ? '0' : '');
-  out += '' + seconds;
-  return out;
-}
-
-function Timer(props) {
-  const [time, setTime] = useState(60);
-
-  const endTimer = () => {
-    props.onTimerEnd();
-  };
-
-  useEffect(() => {
-    let interval = setInterval(() => {
-      let newTime = time - 2;
-      if (props.gameState === 'active') setTime(newTime);
-      console.log(newTime);
-      if (newTime < 0) endTimer();
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [props]);
-
-  return <Typography>{fancyTimeFormat(time)}</Typography>;
-}
-
-export default Timer;
-*/
-
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 
-function fancyTimeFormat(time) {
+function timeFormat(time) {
   var out = '';
   var minutes = Math.floor((time % 3600) / 60);
   var seconds = Math.floor(time % 60);
@@ -50,6 +11,7 @@ function fancyTimeFormat(time) {
   return out;
 }
 
+// Timer implementation based on this tutorial: https://youtu.be/NAx76xx40jM
 class Timer extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +22,7 @@ class Timer extends Component {
 
   render() {
     const { time } = this.state;
-    return <Typography align="center">{fancyTimeFormat(time)}</Typography>;
+    return <Typography align="center">{timeFormat(time)}</Typography>;
   }
 
   componentDidMount() {
