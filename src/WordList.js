@@ -30,10 +30,9 @@ function createListItem(str, key) {
   );
 }
 
-function createListItems(lst, title) {
+function createListItems(lst) {
   let listItems = [];
-  for (let i = 0; i < lst.length; i++)
-    listItems.push(createListItem(lst[i], title + '_list_item_' + 1));
+  for (let i = 0; i < lst.length; i++) listItems.push(createListItem(lst[i]));
   return listItems;
 }
 
@@ -52,7 +51,7 @@ function WordList(props) {
         <Typography variant="h6" className={classes.title}>
           {props.title}
         </Typography>
-        <List>{createListItems(props.words, props.title)}</List>
+        <List>{createListItems(props.words)}</List>
       </Paper>
     </Grid>
   );
