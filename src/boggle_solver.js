@@ -16,8 +16,7 @@ class CoordinateSet {
    * @param {number} x - x axis value of the coordinate.
    */
   add(y, x) {
-    if (!this.coordinates.hasOwnProperty(y))
-      this.coordinates[y] = new Set();
+    if (!this.coordinates.hasOwnProperty(y)) this.coordinates[y] = new Set();
     this.coordinates[y].add(x);
   }
 
@@ -26,11 +25,9 @@ class CoordinateSet {
    * @param {number} x - x axis value of the coordinate.
    */
   delete(y, x) {
-    if (!this.coordinates.hasOwnProperty(y))
-      return;
+    if (!this.coordinates.hasOwnProperty(y)) return;
     this.coordinates[y].delete(x);
-    if (this.coordinates[y].length === 0)
-      delete this.coordinates[y];
+    if (this.coordinates[y].length === 0) delete this.coordinates[y];
   }
 
   /** Determines whether the y, x coordinate is present in the set.
@@ -39,22 +36,21 @@ class CoordinateSet {
    * @returns {boolean} cointains - returns where the coordinate is in the set.
    */
   has(y, x) {
-    if (!this.coordinates.hasOwnProperty(y))
-      return false;
+    if (!this.coordinates.hasOwnProperty(y)) return false;
     return this.coordinates[y].has(x);
   }
 }
 
 // Possible adjacent letters [y offset, x offset]
 const directions = [
-  [-1, -1],  // Upper left
-  [-1, 0],   // Upper
-  [-1, 1],   // Upper right
-  [0, 1],    // Right
-  [1, 1],    // Lower right
-  [1, 0],    // Lower
-  [1, -1],   // Lower left
-  [0, -1]    // Left
+  [-1, -1], // Upper left
+  [-1, 0], // Upper
+  [-1, 1], // Upper right
+  [0, 1], // Right
+  [1, 1], // Lower right
+  [1, 0], // Lower
+  [1, -1], // Lower left
+  [0, -1], // Left
 ];
 
 /**
@@ -65,8 +61,7 @@ const directions = [
  * @returns {string[]} solutions - Possible solutions to the Boggle board.
  */
 exports.findAllSolutions = function(grid, dictionary) {
-  if (grid == null || dictionary == null)
-    return [];
+  if (grid == null || dictionary == null) return [];
   lowerCaseStringGrid(grid);
   let originalMappings = lowerCaseStringArray(dictionary);
 
@@ -80,7 +75,7 @@ exports.findAllSolutions = function(grid, dictionary) {
     }
 
   return solutions;
-}
+};
 
 /** Performs DFS search on the grid at any given point
  * @param {string[][]} grid - The Boggle game board.
@@ -92,18 +87,22 @@ exports.findAllSolutions = function(grid, dictionary) {
  * @param {string[]} solutions - Output set.
  */
 function searchDFS(grid, y, x, trieNode, visited, originalMappings, solutions) {
-  if (y < 0 || x < 0 || y >= grid.length ||
-    x >= grid[y].length || visited.has(y, x))
+  if (
+    y < 0 ||
+    x < 0 ||
+    y >= grid.length ||
+    x >= grid[y].length ||
+    visited.has(y, x)
+  )
     return;
 
-  if (!trieNode.children.hasOwnProperty(grid[y][x].charAt(0)))
-    return;
+  if (!trieNode.children.hasOwnProperty(grid[y][x].charAt(0))) return;
 
   trieNode = trieNode.children[grid[y][x].charAt(0)];
 
   // Moving to the end of the current cell in case it has more than 1 character
   // ('Qu').
-  let i = 1  // i is declared in the scope of the function to be used later.
+  let i = 1; // i is declared in the scope of the function to be used later.
   for (; trieNode.children.hasOwnProperty(grid[y][x].charAt(i)); i++)
     trieNode = trieNode.children[grid[y][x].charAt(i)];
 
@@ -119,9 +118,13 @@ function searchDFS(grid, y, x, trieNode, visited, originalMappings, solutions) {
   for (let direction = 0; direction < directions.length; direction++) {
     searchDFS(
       grid,
-      y + directions[direction][0],  // Adjacent tile.
-      x + directions[direction][1],  // Adjacent tile.
-      trieNode, visited, originalMappings, solutions);
+      y + directions[direction][0], // Adjacent tile.
+      x + directions[direction][1], // Adjacent tile.
+      trieNode,
+      visited,
+      originalMappings,
+      solutions
+    );
   }
 
   visited.delete(y, x);
@@ -135,8 +138,7 @@ function searchDFS(grid, y, x, trieNode, visited, originalMappings, solutions) {
 function generateTrie(dictionary) {
   let root = new TrieNode();
   for (let word = 0; word < dictionary.length; word++) {
-    if (dictionary[word].length >= 3)
-      insertWordToTrie(root, dictionary[word]);
+    if (dictionary[word].length >= 3) insertWordToTrie(root, dictionary[word]);
   }
   return root;
 }
