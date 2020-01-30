@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import StartButton from './StartButton.js';
 
-test('Stope state works', () => {
+test('Start state works', () => {
   const state = 'stopped';
 
   const { getByText } = render(<StartButton state={state} />);
