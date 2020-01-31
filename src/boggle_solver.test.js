@@ -1,4 +1,4 @@
-const boggle_solver = require('./boggle_solver');
+import findAllSolutions from './boggle_solver.js';
 
 /** Lowercases a string array in-place. (Used for case-insensitive string array
  *  matching).
@@ -17,7 +17,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['abc', 'abdhi', 'abi'];
       const expected = ['abc', 'abdhi'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -45,7 +45,7 @@ describe('Boggle Solver tests', () => {
       ];
       const expected = ['arf', 'ciel', 'derrick', 'army'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -59,7 +59,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['alphabet', 'aeroplane', 'dijkstra'];
       const expected = [];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -83,7 +83,7 @@ describe('Boggle Solver tests', () => {
       ];
       const expected = ['abstemiousnesses', 'sessensuoimetsba'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -98,7 +98,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['eab', 'ebc', 'ecb', 'eda', 'efc', 'ehi', 'eih'];
       const expected = ['eab', 'ebc', 'ecb', 'eda', 'efc', 'ehi', 'eih'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -111,7 +111,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['bqu'];
       const expected = ['bqu'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -124,7 +124,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['qxa', 'qua'];
       const expected = ['qua'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -138,7 +138,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['a', 'b', 'c', 'd', 'abc', 'ab', '', 'ghefi'];
       const expected = ['abc', 'ghefi'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -153,7 +153,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['querbe', 'qerbe'];
       const expected = ['querbe'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -174,7 +174,7 @@ describe('Boggle Solver tests', () => {
       // 'iraq' or any word ending in 'q', won't appear in a Boggle game.
       const expected = ['iraqu', 'quari', 'quaa'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -188,7 +188,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['ade', 'ada', 'adexx', 'xxxxxx', 'xxxxxxx'];
       const expected = ['ade', 'adexx', 'xxxxxx'];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -205,7 +205,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['a', 'b', 'c'];
       const expected = [];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
@@ -218,7 +218,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = ['aaa', 'a'];
       const expected = [];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       lowercaseStringArray(solutions);
       lowercaseStringArray(expected);
@@ -237,7 +237,7 @@ describe('Boggle Solver tests', () => {
       const dictionary = [];
       const expected = [];
 
-      let solutions = boggle_solver.findAllSolutions(grid, dictionary);
+      let solutions = findAllSolutions(grid, dictionary);
 
       // Lowercasing for case-insensitive string array matching.
       lowercaseStringArray(solutions);
