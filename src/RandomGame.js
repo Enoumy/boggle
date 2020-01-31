@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import CircularIndeterminate from './Loading.js';
-import DenseAppBar from './DenseAppBar.js';
 import Grid from '@material-ui/core/Grid';
 import Notification from './Notification.js';
 import SizeSelector from './SizeSelector.js';
@@ -102,7 +101,6 @@ function RandomGame() {
 
   return (
     <div>
-      <DenseAppBar />
       <SizeSelector
         parentCallback={gridSize => {
           setGridSize(gridSize);
