@@ -10,7 +10,7 @@ import Timer from './Timer.js';
 import TimingOption from './TimingOption.js';
 import WordInput from './WordInput';
 import WordList from './WordList';
-import { findAllSolutions } from './boggle_solver.js';
+import findAllSolutions from './boggle_solver.js';
 const dictionary = require('./full-wordlist.json')['words'];
 
 /** Returns a randomly generated sizexsize grid.

@@ -60,7 +60,7 @@ const directions = [
  * @param {string[]} dictionary - The list of available words.
  * @returns {string[]} solutions - Possible solutions to the Boggle board.
  */
-exports.findAllSolutions = function(grid, dictionary) {
+export default function findAllSolutions(grid, dictionary) {
   if (grid == null || dictionary == null) return [];
   lowerCaseStringGrid(grid);
   let originalMappings = lowerCaseStringArray(dictionary);
