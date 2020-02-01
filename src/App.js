@@ -9,7 +9,8 @@ function App() {
   console.log(React.version);
   return (
     <div>
-      {/*<DenseAppBar />*/}
+      <DenseAppBar />
+      <div style={{ height: 40 }}></div>
       <Router>
         <div>
           <nav>
