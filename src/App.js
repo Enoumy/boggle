@@ -4,29 +4,15 @@ import RandomGame from './RandomGame.js';
 import MultiplayerGame from './MultiplayerGame.js';
 import ChallengeGame from './ChallengeGame.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Navigation from './Navigation.js';
 
 function App() {
-  console.log(React.version);
   return (
     <div>
-      <DenseAppBar />
-      <div style={{ height: 40 }}></div>
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Random</Link>
-              </li>
-              <li>
-                <Link to="/multiplayer">Multiplayer</Link>
-              </li>
-              <li>
-                <Link to="/challenge">Challenges</Link>
-              </li>
-            </ul>
-          </nav>
-
+        <Navigation />
+        <div style={{ height: 80 }}></div>
+        <div style={{ marginLeft: 240, paddingLeft: 8 }}>
           <Switch>
             <Route exact path="/">
               <RandomGame />

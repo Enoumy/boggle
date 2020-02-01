@@ -8,14 +8,17 @@ function Alert(props) {
 
 function Notification(props) {
   return (
-    <Snackbar
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      open={props.notificationOpen}
-      autoHideDuration={2000}
-      onClose={props.handleClose}
-    >
-      <Alert severity={props.severity}>{props.message}</Alert>
-    </Snackbar>
+    <div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={props.notificationOpen}
+        autoHideDuration={2000}
+        onClose={props.handleClose}
+        style={{ marginLeft: 240 }}
+      >
+        <Alert severity={props.severity}>{props.message}</Alert>
+      </Snackbar>
+    </div>
   );
 }
 
