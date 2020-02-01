@@ -15,6 +15,7 @@ import SecurityIcon from '@material-ui/icons/Security';
 import PeopleIcon from '@material-ui/icons/People';
 import FontDownloadIcon from '@material-ui/icons/FontDownload';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -37,6 +38,12 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  loginButton: {
+    marginRight: theme.spacing(1),
+  },
+  title: {
+    flexGrow: 1,
+  },
   toolbar: theme.mixins.toolbar,
 }));
 
@@ -55,9 +62,10 @@ export default function Navigation() {
           >
             <FontDownloadIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             Boggle Game
           </Typography>
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <Drawer

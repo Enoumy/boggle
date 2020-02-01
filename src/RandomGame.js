@@ -85,7 +85,6 @@ function RandomGame() {
 
   const onEnter = word => {
     word = word.toLowerCase().trim();
-    console.log(word);
     if (remainingSolutions.has(word)) {
       setWordsFoundsSet([wordsFoundSet.add(word)]);
       setWordsFound([word, ...wordsFound]);
