@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,6 +16,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import FontDownloadIcon from '@material-ui/icons/FontDownload';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -49,6 +50,22 @@ const useStyles = makeStyles(theme => ({
 
 export default function Navigation() {
   const classes = useStyles();
+  const [user, setUser] = useState('');
+
+  function logIn() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function(result) {
+        console.log(result.user);
+        console.log(result);
+        setUser(result.user);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
 
   return (
     <div className={classes.root}>
@@ -65,7 +82,27 @@ export default function Navigation() {
           <Typography variant="h6" noWrap className={classes.title}>
             Boggle Game
           </Typography>
-          <Button color="inherit">Login</Button>
+          {user === '' ? (
+            <Button
+              color="inherit"
+              onClick={() => {
+                logIn();
+              }}
+            >
+              Login
+            </Button>
+          ) : (
+            <Typography>
+              {user['displayName']}{' '}
+              <Button
+                onClick={() => {
+                  setUser('');
+                }}
+              >
+                Logout
+              </Button>
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
