@@ -10,6 +10,8 @@ import TimingOption from './TimingOption.js';
 import WordInput from './WordInput';
 import WordList from './WordList';
 import findAllSolutions from './boggle_solver.js';
+import Score from './Score.js';
+import scoring from './scoring.js';
 const dictionary = require('./full-wordlist.json')['words'];
 
 /** Returns a randomly generated sizexsize grid.
@@ -55,6 +57,7 @@ function RandomGame() {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
+  const [score, setScore] = useState(0);
 
   const startGame = () => {
     setGameState('loading');
@@ -66,6 +69,7 @@ function RandomGame() {
     setWordsFound([]);
     setWordsFoundsSet([new Set()]);
     setGameState('active');
+    setScore(0);
   };
 
   const stopGame = () => {
@@ -86,6 +90,7 @@ function RandomGame() {
   const onEnter = word => {
     word = word.toLowerCase().trim();
     if (remainingSolutions.has(word)) {
+      setScore(score + scoring(word));
       setWordsFoundsSet([wordsFoundSet.add(word)]);
       setWordsFound([word, ...wordsFound]);
       remainingSolutions.delete(word);
@@ -124,6 +129,7 @@ function RandomGame() {
         }}
         gameState={gameState}
       />
+      <Score value={score} />
       {gameState === 'loading' ? (
         <CircularIndeterminate />
       ) : (
