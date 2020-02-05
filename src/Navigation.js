@@ -48,9 +48,8 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
 }));
 
-export default function Navigation() {
+export default function Navigation(props) {
   const classes = useStyles();
-  const [user, setUser] = useState('');
 
   function logIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -58,9 +57,12 @@ export default function Navigation() {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
+        console.log('Sending...');
         console.log(result.user);
-        console.log(result);
-        setUser(result.user);
+        props.setUser(result.user);
+        console.log('Sending...');
+        console.log(true);
+        props.setLoggedIn(true);
       })
       .catch(function(error) {
         console.log(error);
@@ -82,7 +84,7 @@ export default function Navigation() {
           <Typography variant="h6" noWrap className={classes.title}>
             Boggle Game
           </Typography>
-          {user === '' ? (
+          {!props.loggedIn ? (
             <Button
               color="inherit"
               onClick={() => {
@@ -93,10 +95,21 @@ export default function Navigation() {
             </Button>
           ) : (
             <Typography>
-              {user['displayName']}{' '}
+              {props.user['displayName']}{' '}
               <Button
                 onClick={() => {
-                  setUser('');
+                  console.log('Logging out...');
+                  firebase
+                    .auth()
+                    .signOut()
+                    .then(function() {
+                      props.setUser('');
+                      props.setLoggedIn(false);
+                      console.log('Signed out');
+                    })
+                    .catch(function(error) {
+                      console.log(error);
+                    });
                 }}
               >
                 Logout

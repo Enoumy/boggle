@@ -1,7 +1,11 @@
 import React from 'react';
 
 function ChallengeGame() {
-  return <div>Challenge Game!</div>;
+  return (
+    <div>
+      <p>Challenge Game!</p>
+    </div>
+  );
 }
 
 export default ChallengeGame;
