@@ -1,11 +1,11 @@
 import React from 'react';
 import UserResponse from './UserResponse.js';
+import AvailableChallenges from './AvailableChallenges.js';
 
-function ChallengeGame() {
+function ChallengeGame(props) {
   return (
     <div>
-      <p>Challenge Game!</p>
-      <UserResponse collectionName="users" />
+      <AvailableChallenges user={props.user} loggedIn={props.loggedIn} />
     </div>
   );
 }

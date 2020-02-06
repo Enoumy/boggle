@@ -79,7 +79,9 @@ export default function Navigation(props) {
             className={classes.menuButton}
             color="inherit"
           >
-            <FontDownloadIcon />
+            <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+              <FontDownloadIcon />
+            </Link>
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
             Boggle Game

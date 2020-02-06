@@ -8,8 +8,6 @@ import Navigation from './Navigation.js';
 import firebase from 'firebase';
 
 function App() {
-  console.log('Logged in user:');
-  console.log(firebase.auth());
   const [user, setUser] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -41,7 +39,7 @@ function App() {
           loggedIn={loggedIn}
         />
         <div style={{ height: 80 }}></div>
-        <div style={{ marginLeft: 240, paddingLeft: 8 }}>
+        <div style={{ marginLeft: 240, padding: 16 }}>
           <Switch>
             <Route exact path="/">
               <RandomGame user={user} loggedIn={loggedIn} />
