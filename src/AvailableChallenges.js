@@ -83,7 +83,7 @@ function AvailableChallenges({ user, loggedIn }) {
           {challenges.map(row => (
             <TableRow>
               <TableCell component="th" scope="row">
-                <Link to={'/challenges/' + row.date}>{row.date}</Link>
+                <Link to={'/challenge/' + row.date}>{row.date}</Link>
               </TableCell>
 
               <TableCell align="right">{row.boardSize}</TableCell>
@@ -91,7 +91,7 @@ function AvailableChallenges({ user, loggedIn }) {
               <TableCell align="right">{row.globalHighScore}</TableCell>
               <TableCell align="right">
                 <Link
-                  to={'/challenges/' + row.date}
+                  to={'/challenge/' + row.date}
                   style={{ textDecoration: 'none', color: 'black' }}
                 >
                   <PlayArrowIcon />

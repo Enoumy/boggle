@@ -3,6 +3,7 @@ import DenseAppBar from './DenseAppBar.js';
 import RandomGame from './RandomGame.js';
 import MultiplayerGame from './MultiplayerGame.js';
 import ChallengeGameMenu from './ChallengeGameMenu.js';
+import ChallengeGame from './ChallengeGame.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Navigation from './Navigation.js';
 import firebase from 'firebase';
@@ -47,8 +48,11 @@ function App() {
             <Route path="/multiplayer">
               <MultiplayerGame user={user} loggedIn={loggedIn} />
             </Route>
-            <Route path="/challenge">
+            <Route exact path="/challenge">
               <ChallengeGameMenu user={user} loggedIn={loggedIn} />
+            </Route>
+            <Route path="/challenge/:game">
+              <ChallengeGame />
             </Route>
           </Switch>
         </div>
