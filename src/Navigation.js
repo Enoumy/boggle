@@ -57,11 +57,7 @@ export default function Navigation(props) {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
-        console.log('Sending...');
-        console.log(result.user);
         props.setUser(result.user);
-        console.log('Sending...');
-        console.log(true);
         props.setLoggedIn(true);
       })
       .catch(function(error) {
