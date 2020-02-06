@@ -63,7 +63,7 @@ function AvailableChallenges({ user, loggedIn }) {
         setChallenges(newRows);
       });
     return () => unsubscribe();
-  }, []);
+  }, [loggedIn]);
 
   return (
     <TableContainer component={Paper}>
