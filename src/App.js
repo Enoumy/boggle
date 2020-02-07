@@ -52,7 +52,7 @@ function App() {
               <ChallengeGameMenu user={user} loggedIn={loggedIn} />
             </Route>
             <Route path="/challenge/:game">
-              <ChallengeGame />
+              <ChallengeGame user={user} loggedIn={loggedIn} />
             </Route>
           </Switch>
         </div>
