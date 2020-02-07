@@ -12,6 +12,7 @@ import StartButton from './StartButton.js';
 import WordInput from './WordInput.js';
 import WordList from './WordList.js';
 import scoring from './scoring.js';
+import Notification from './Notification';
 import findAllSolutions from './boggle_solver.js';
 
 const dictionary = require('./full-wordlist.json')['words'];
@@ -23,10 +24,22 @@ function ChallengeGame({ user, loggedIn }) {
   const [wordsFound, setWordsFound] = useState([]);
   const [[wordsFoundSet], setWordsFoundSet] = useState([new Set()]);
   const [[availableWordsSet], setAvailableWordsSet] = useState([new Set()]);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [severity, setSeverity] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleNotificationOpen = msg => {
+    setMessage(msg);
+    setNotificationOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setNotificationOpen(false);
+  };
 
   let { game } = useParams();
 
-  // TODO: Implement Start Game
   function startGame() {
     setScore(0);
     setWordsFound([]);
@@ -34,7 +47,6 @@ function ChallengeGame({ user, loggedIn }) {
     setGameState('active');
   }
 
-  // TODO: Implement Stop Game
   function stopGame() {
     setGameState('stopped');
   }
@@ -86,7 +98,11 @@ function ChallengeGame({ user, loggedIn }) {
                 }}
                 state={gameState}
               />
-              <Timer gameState={gameState} startTime={60} />
+              <Timer
+                gameState={gameState}
+                startTime={60}
+                onTimerEnd={stopGame}
+              />
               <Score value={score} />
               {gameState === 'active' ? (
                 <SquareGrid data={board} />
@@ -103,6 +119,11 @@ function ChallengeGame({ user, loggedIn }) {
                       wordsFoundSet.add(word);
                       setWordsFoundSet([wordsFoundSet]);
                       setScore(score + scoring(word));
+                      setSeverity('success');
+                      handleNotificationOpen("Nice! You found '" + word + "'");
+                    } else {
+                      setSeverity('warning');
+                      handleNotificationOpen('Word already found: ' + word);
                     }
                   }
                 }}
@@ -119,6 +140,12 @@ function ChallengeGame({ user, loggedIn }) {
           )}
         </div>
       )}
+      <Notification
+        notificationOpen={notificationOpen}
+        handleClose={handleClose}
+        severity={severity}
+        message={message}
+      />
     </div>
   );
 }
