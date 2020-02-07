@@ -16,6 +16,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import FontDownloadIcon from '@material-ui/icons/FontDownload';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 
@@ -57,6 +59,7 @@ export default function Navigation(props) {
       .auth()
       .signInWithPopup(provider)
       .then(function(result) {
+        console.log(result.user);
         props.setUser(result.user);
         props.setLoggedIn(true);
       })
@@ -70,18 +73,20 @@ export default function Navigation(props) {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-          >
-            <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
-              <FontDownloadIcon />
-            </Link>
-          </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
-            Boggle Game
-          </Typography>
+          <Grid container alignItems="center">
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+            >
+              <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+                <FontDownloadIcon />
+              </Link>
+            </IconButton>
+            <Typography variant="h6" noWrap className={classes.title}>
+              Boggle Game
+            </Typography>
+          </Grid>
           {!props.loggedIn ? (
             <Button
               color="inherit"
@@ -92,27 +97,40 @@ export default function Navigation(props) {
               Login
             </Button>
           ) : (
-            <Typography>
-              {props.user['displayName']}{' '}
-              <Button
-                onClick={() => {
-                  console.log('Logging out...');
-                  firebase
-                    .auth()
-                    .signOut()
-                    .then(function() {
-                      props.setUser('');
-                      props.setLoggedIn(false);
-                      console.log('Signed out');
-                    })
-                    .catch(function(error) {
-                      console.log(error);
-                    });
-                }}
-              >
-                Logout
-              </Button>
-            </Typography>
+            <Grid
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+              spacing={1}
+            >
+              <Grid item>
+                <Avatar src={props.user.photoURL} />
+              </Grid>
+              <Grid item>
+                <Typography>
+                  {props.user['displayName']}{' '}
+                  <Button
+                    onClick={() => {
+                      console.log('Logging out...');
+                      firebase
+                        .auth()
+                        .signOut()
+                        .then(function() {
+                          props.setUser('');
+                          props.setLoggedIn(false);
+                          console.log('Signed out');
+                        })
+                        .catch(function(error) {
+                          console.log(error);
+                        });
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Typography>
+              </Grid>
+            </Grid>
           )}
         </Toolbar>
       </AppBar>

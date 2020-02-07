@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Row from './Row.js';
-// import Tile from './Tile.js';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,12 +19,6 @@ const useStyles = makeStyles(theme => ({
     margin: 10,
   },
 }));
-
-// function FormRow(props) {
-//   const cells = [];
-//   for (let i = 0; i < props.n; i++) cells.push(<Tile data={props.data[i]} />);
-//   return <Grid container> {cells} </Grid>;
-// }
 
 function SquareGrid(props) {
   const classes = useStyles();
