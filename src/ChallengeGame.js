@@ -5,13 +5,39 @@ import stringToBoard from './util/stringToBoard.js';
 import Loading from './Loading.js';
 import SquareGrid from './Grid.js';
 import Alert from '@material-ui/lab/Alert';
+import Typography from '@material-ui/core/Typography';
+import Timer from './Timer.js';
+import Score from './Score.js';
+import StartButton from './StartButton.js';
+import WordInput from './WordInput.js';
+import WordList from './WordList.js';
+import scoring from './scoring.js';
+import findAllSolutions from './boggle_solver.js';
+
+const dictionary = require('./full-wordlist.json')['words'];
 
 function ChallengeGame({ user, loggedIn }) {
   const [gameState, setGameState] = useState('loading');
   const [board, setBoard] = useState();
   const [score, setScore] = useState(0);
+  const [wordsFound, setWordsFound] = useState([]);
+  const [[wordsFoundSet], setWordsFoundSet] = useState([new Set()]);
+  const [[availableWordsSet], setAvailableWordsSet] = useState([new Set()]);
 
   let { game } = useParams();
+
+  // TODO: Implement Start Game
+  function startGame() {
+    setScore(0);
+    setWordsFound([]);
+    setWordsFoundSet([new Set()]);
+    setGameState('active');
+  }
+
+  // TODO: Implement Stop Game
+  function stopGame() {
+    setGameState('stopped');
+  }
 
   useEffect(() => {
     firebase
@@ -21,8 +47,12 @@ function ChallengeGame({ user, loggedIn }) {
       .get()
       .then(doc => {
         if (doc.exists) {
-          setBoard(stringToBoard(doc.data().board));
-          setGameState('stopped');
+          let loadedBoard = stringToBoard(doc.data().board);
+          setBoard(loadedBoard);
+          let solutions = findAllSolutions(loadedBoard, dictionary);
+          console.log(solutions);
+          setAvailableWordsSet([new Set(solutions)]);
+          setGameState('loaded');
         } else {
           console.log('Document ' + game + ' not found!');
           setGameState('notFound');
@@ -46,7 +76,45 @@ function ChallengeGame({ user, loggedIn }) {
             <p>Game {game} not found!</p>
           ) : (
             <div>
-              <SquareGrid data={board} />
+              <Typography variant="h6" align="center">
+                Challenge Game {game}
+              </Typography>
+              <StartButton
+                onClick={() => {
+                  if (gameState === 'active') stopGame();
+                  else startGame();
+                }}
+                state={gameState}
+              />
+              <Timer gameState={gameState} startTime={60} />
+              <Score value={score} />
+              {gameState === 'active' ? (
+                <SquareGrid data={board} />
+              ) : (
+                <div></div>
+              )}
+              <WordInput
+                active={gameState === 'active'}
+                onEnter={word => {
+                  word = word.trim();
+                  if (availableWordsSet.has(word)) {
+                    if (!wordsFoundSet.has(word)) {
+                      setWordsFound([word, ...wordsFound]);
+                      wordsFoundSet.add(word);
+                      setWordsFoundSet([wordsFoundSet]);
+                      setScore(score + scoring(word));
+                    }
+                  }
+                }}
+              />
+              {gameState === 'active' ? (
+                <WordList
+                  title={'Words found: ' + wordsFound.length}
+                  words={wordsFound}
+                />
+              ) : (
+                <div></div>
+              )}
             </div>
           )}
         </div>
