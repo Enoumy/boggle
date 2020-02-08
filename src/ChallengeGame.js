@@ -17,6 +17,23 @@ import findAllSolutions from './boggle_solver.js';
 
 const dictionary = require('./full-wordlist.json')['words'];
 
+let userHighscore = 0;
+let challengeHighscore = 0;
+let challengeLeaderBoardUid = {};
+let challengeLeaderBoardDisplayName = {};
+
+function logLeaderboardStatus() {
+  console.log('userHighscore:');
+  console.log(userHighscore);
+  console.log('challengeHighscore:');
+  console.log(challengeHighscore);
+  console.log('challengeLeaderBoardUid:');
+  console.log(challengeLeaderBoardUid);
+  console.log('challengeLeaderBoardDisplayName:');
+  console.log(challengeLeaderBoardDisplayName);
+  console.log('\n');
+}
+
 function ChallengeGame({ user, loggedIn }) {
   const [gameState, setGameState] = useState('loading');
   const [board, setBoard] = useState();
@@ -59,17 +76,47 @@ function ChallengeGame({ user, loggedIn }) {
       .get()
       .then(doc => {
         if (doc.exists) {
+          console.log('uid: ' + user.uid);
+          console.log('Before');
+          logLeaderboardStatus();
+
+          // Reading the Boggle game board.
           let loadedBoard = stringToBoard(doc.data().board);
+          if (loadedBoard == null) loadedBoard = [[]];
           setBoard(loadedBoard);
+
+          // Finding out the possible solutions to the loaded board.
           let solutions = findAllSolutions(loadedBoard, dictionary);
           setAvailableWordsSet([new Set(solutions)]);
+
+          // Reading the current highscore of the challenge.
+          challengeHighscore = doc.data()['high-score'];
+          if (challengeHighscore == null) challengeHighscore = 0;
+
+          // Reading the current leaderboard by uid.
+          challengeLeaderBoardUid = doc.data()['user-scores'];
+          if (challengeLeaderBoardUid == null) challengeLeaderBoardUid = {};
+
+          // Reading the current user's high score.
+          userHighscore = challengeLeaderBoardUid[user.uid];
+          if (userHighscore == null) userHighscore = 0;
+
+          // Reading the current leaderboard by displayName.
+          challengeLeaderBoardDisplayName = doc.data()['user-scores-name'];
+          if (challengeLeaderBoardDisplayName == null)
+            challengeLeaderBoardDisplayName = {};
+
+          console.log('After:');
+          logLeaderboardStatus();
+
+          // Updating the game state to loaded.
           setGameState('loaded');
         } else {
           console.log('Document ' + game + ' not found!');
           setGameState('notFound');
         }
       });
-  }, []);
+  }, [loggedIn]);
 
   return (
     <div>
