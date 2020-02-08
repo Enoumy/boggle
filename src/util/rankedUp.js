@@ -11,3 +11,5 @@ function findLowestNeighbor(scores, n) {
   while (i >= 0 && scores[i] > n) i--;
   return i;
 }
+
+export default rankedUp;

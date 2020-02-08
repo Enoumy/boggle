@@ -15,6 +15,7 @@ import scoring from './scoring.js';
 import Notification from './Notification.js';
 import Leaderboard from './Leaderboard.js';
 import findAllSolutions from './boggle_solver.js';
+import rankedUp from './util/rankedUp.js';
 
 const dictionary = require('./full-wordlist.json')['words'];
 
@@ -43,6 +44,7 @@ function ChallengeGame({ user, loggedIn }) {
   const [[wordsFoundSet], setWordsFoundSet] = useState([new Set()]);
   const [[availableWordsSet], setAvailableWordsSet] = useState([new Set()]);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [rankUpNotificationOpen, setRankUpNotificationOpen] = useState(false);
   const [severity, setSeverity] = useState('');
   const [message, setMessage] = useState('');
   const [rankings, setRankings] = useState({});
@@ -55,6 +57,11 @@ function ChallengeGame({ user, loggedIn }) {
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') return;
     setNotificationOpen(false);
+  };
+
+  const rankUpHandleClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setRankUpNotificationOpen(false);
   };
 
   let { game } = useParams();
@@ -77,7 +84,18 @@ function ChallengeGame({ user, loggedIn }) {
       return;
     }
 
-    // Updating leaderboar data.
+    let onlyHighScores = [];
+    for (let key in challengeLeaderBoardDisplayName) {
+      onlyHighScores.push(challengeLeaderBoardDisplayName[key]);
+    }
+    onlyHighScores.sort();
+
+    if (rankedUp(onlyHighScores, userHighscore, score)) {
+      console.log('Yay! You ranked up!');
+      setRankUpNotificationOpen(true);
+    }
+
+    // Updating leaderboard data.
     challengeLeaderBoardUid[user.uid] = score;
     challengeLeaderBoardDisplayName[user.displayName] = score;
     setRankings(challengeLeaderBoardDisplayName);
@@ -120,6 +138,7 @@ function ChallengeGame({ user, loggedIn }) {
 
           // Finding out the possible solutions to the loaded board.
           let solutions = findAllSolutions(loadedBoard, dictionary);
+          console.log(solutions);
           setAvailableWordsSet([new Set(solutions)]);
 
           // Reading the current highscore of the challenge.
@@ -222,6 +241,14 @@ function ChallengeGame({ user, loggedIn }) {
         handleClose={handleClose}
         severity={severity}
         message={message}
+        horizontal="right"
+      />
+      <Notification
+        notificationOpen={rankUpNotificationOpen}
+        handleClose={rankUpHandleClose}
+        severity="success"
+        message="Yay! You ranked up!"
+        horizontal="center"
       />
     </div>
   );
