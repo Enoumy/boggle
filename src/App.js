@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import DenseAppBar from './DenseAppBar.js';
 import RandomGame from './RandomGame.js';
 import MultiplayerGame from './MultiplayerGame.js';
 import ChallengeGameMenu from './ChallengeGameMenu.js';
 import ChallengeGame from './ChallengeGame.js';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from './Navigation.js';
 import firebase from 'firebase';
 

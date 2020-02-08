@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DenseAppBar from './DenseAppBar.js';
 import CasinoIcon from '@material-ui/icons/Casino';
 import SecurityIcon from '@material-ui/icons/Security';
 import PeopleIcon from '@material-ui/icons/People';
