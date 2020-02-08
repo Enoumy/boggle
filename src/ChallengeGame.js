@@ -65,7 +65,41 @@ function ChallengeGame({ user, loggedIn }) {
   }
 
   function stopGame() {
+    if (score > userHighscore) updateScores();
     setGameState('stopped');
+  }
+
+  function updateScores() {
+    if (!loggedIn) {
+      console.log('Cannot record new high score if not logged in!');
+      return;
+    }
+
+    // Updating leaderboar data.
+    challengeLeaderBoardUid[user.uid] = score;
+    challengeLeaderBoardDisplayName[user.displayName] = score;
+    userHighscore = score; // To avoid reloading db.
+    if (score > challengeHighscore) challengeHighscore = score;
+
+    // Write to firestore...
+    firebase
+      .firestore()
+      .collection('challenges')
+      .doc(game)
+      .set(
+        {
+          'high-score': challengeHighscore,
+          'user-scores': challengeLeaderBoardUid,
+          'user-scores-name': challengeLeaderBoardDisplayName,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        console.log('Leaderboard updated!');
+      })
+      .catch(error => {
+        console.error('Error updatin leaderboard: ', error);
+      });
   }
 
   useEffect(() => {
@@ -76,10 +110,6 @@ function ChallengeGame({ user, loggedIn }) {
       .get()
       .then(doc => {
         if (doc.exists) {
-          console.log('uid: ' + user.uid);
-          console.log('Before');
-          logLeaderboardStatus();
-
           // Reading the Boggle game board.
           let loadedBoard = stringToBoard(doc.data().board);
           if (loadedBoard == null) loadedBoard = [[]];
@@ -105,9 +135,6 @@ function ChallengeGame({ user, loggedIn }) {
           challengeLeaderBoardDisplayName = doc.data()['user-scores-name'];
           if (challengeLeaderBoardDisplayName == null)
             challengeLeaderBoardDisplayName = {};
-
-          console.log('After:');
-          logLeaderboardStatus();
 
           // Updating the game state to loaded.
           setGameState('loaded');
