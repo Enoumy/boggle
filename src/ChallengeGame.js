@@ -62,7 +62,6 @@ function ChallengeGame({ user, loggedIn }) {
           let loadedBoard = stringToBoard(doc.data().board);
           setBoard(loadedBoard);
           let solutions = findAllSolutions(loadedBoard, dictionary);
-          console.log(solutions);
           setAvailableWordsSet([new Set(solutions)]);
           setGameState('loaded');
         } else {
@@ -103,7 +102,7 @@ function ChallengeGame({ user, loggedIn }) {
                 startTime={60}
                 onTimerEnd={stopGame}
               />
-              <Score value={score} />
+              <Score prefix={'Score'} value={score} />
               {gameState === 'active' ? (
                 <SquareGrid data={board} />
               ) : (

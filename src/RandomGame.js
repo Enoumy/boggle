@@ -129,7 +129,7 @@ function RandomGame() {
         }}
         gameState={gameState}
       />
-      <Score value={score} />
+      <Score prefix={'Score'} value={score} />
       {gameState === 'loading' ? (
         <CircularIndeterminate />
       ) : (
