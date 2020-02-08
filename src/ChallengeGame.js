@@ -12,7 +12,8 @@ import StartButton from './StartButton.js';
 import WordInput from './WordInput.js';
 import WordList from './WordList.js';
 import scoring from './scoring.js';
-import Notification from './Notification';
+import Notification from './Notification.js';
+import Leaderboard from './Leaderboard.js';
 import findAllSolutions from './boggle_solver.js';
 
 const dictionary = require('./full-wordlist.json')['words'];
@@ -44,6 +45,7 @@ function ChallengeGame({ user, loggedIn }) {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [severity, setSeverity] = useState('');
   const [message, setMessage] = useState('');
+  const [rankings, setRankings] = useState({});
 
   const handleNotificationOpen = msg => {
     setMessage(msg);
@@ -78,6 +80,7 @@ function ChallengeGame({ user, loggedIn }) {
     // Updating leaderboar data.
     challengeLeaderBoardUid[user.uid] = score;
     challengeLeaderBoardDisplayName[user.displayName] = score;
+    setRankings(challengeLeaderBoardDisplayName);
     userHighscore = score; // To avoid reloading db.
     if (score > challengeHighscore) challengeHighscore = score;
 
@@ -135,6 +138,7 @@ function ChallengeGame({ user, loggedIn }) {
           challengeLeaderBoardDisplayName = doc.data()['user-scores-name'];
           if (challengeLeaderBoardDisplayName == null)
             challengeLeaderBoardDisplayName = {};
+          setRankings(challengeLeaderBoardDisplayName);
 
           // Updating the game state to loaded.
           setGameState('loaded');
@@ -207,7 +211,7 @@ function ChallengeGame({ user, loggedIn }) {
                   words={wordsFound}
                 />
               ) : (
-                <div></div>
+                <Leaderboard data={rankings} />
               )}
             </div>
           )}
