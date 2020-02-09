@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import RandomGame from './RandomGame.js';
+import MultiplayerGameMenu from './MultiplayerGameMenu.js';
 import MultiplayerGame from './MultiplayerGame.js';
 import ChallengeGameMenu from './ChallengeGameMenu.js';
 import ChallengeGame from './ChallengeGame.js';
@@ -44,7 +45,10 @@ function App() {
             <Route exact path="/">
               <RandomGame user={user} loggedIn={loggedIn} />
             </Route>
-            <Route path="/multiplayer">
+            <Route exact path="/multiplayer">
+              <MultiplayerGameMenu user={user} loggedIn={loggedIn} />
+            </Route>
+            <Route path="/multiplayer/:game">
               <MultiplayerGame user={user} loggedIn={loggedIn} />
             </Route>
             <Route exact path="/challenge">

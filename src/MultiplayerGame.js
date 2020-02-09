@@ -1,24 +1,14 @@
 import React from 'react';
-import TextInput from './TextInput.js';
-import firebase from 'firebase';
+import { useParams } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 function MultiplayerGame(props) {
+  let { game } = useParams();
+
   return (
-    <div>
-      <p>Multiplayer Game!</p>
-      {props.loggedIn ? (
-        <div>
-          <TextInput promptText="Name?" field="name" user={props.user} />
-          <TextInput
-            promptText="Hometown?"
-            field="hometown"
-            user={props.user}
-          />
-        </div>
-      ) : (
-        <div></div>
-      )}
-    </div>
+    <Typography variant="h6" align="center">
+      Multiplayer Game {game}
+    </Typography>
   );
 }
 
