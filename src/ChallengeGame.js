@@ -119,7 +119,7 @@ function ChallengeGame({ user, loggedIn }) {
         console.log('Leaderboard updated!');
       })
       .catch(error => {
-        console.error('Error updatin leaderboard: ', error);
+        console.error('Error updating leaderboard: ', error);
       });
   }
 

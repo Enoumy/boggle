@@ -12,7 +12,16 @@ import SquareGrid from './Grid.js';
 import StartButton from './StartButton.js';
 import MultiplayerWordsFound from './MultiplayerWordsFound.js';
 import MultiplayerLeaderboard from './MultiplayerLeaderboard.js';
+import WordInput from './WordInput.js';
+import aggregateFoundSolutions from './util/aggregateFoundSolutions.js';
+import findAllSolutions from './boggle_solver.js';
+import Notification from './Notification.js';
 import firebase from 'firebase';
+
+const dictionary = require('./full-wordlist.json')['words'];
+
+let solutions = new Set();
+let blacklistedSolutions = new Set();
 
 function MultiplayerGame(props) {
   const [host, setHost] = useState('dummyHost');
@@ -20,6 +29,9 @@ function MultiplayerGame(props) {
   const [wordsFoundAll, setWordsFoundAll] = useState({});
   const [gameState, setGameState] = useState('loading');
   const [userScore, setUserScore] = useState(0);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [severity, setSeverity] = useState('');
+  const [message, setMessage] = useState('');
 
   let { game } = useParams();
 
@@ -37,16 +49,22 @@ function MultiplayerGame(props) {
         }
         console.log(doc.data());
         let data = doc.data();
-        setBoard(stringToBoard(data['board']));
+        let newBoard = stringToBoard(data['board']);
+        setBoard(newBoard);
         setGameState(data['game-state']);
         setHost(data['host']);
         setWordsFoundAll(data['words-found']);
+        blacklistedSolutions = aggregateFoundSolutions(data['words-found']);
+        solutions = new Set(findAllSolutions(newBoard, dictionary));
+
+        console.log('Blacklisted solutions:');
+        console.log(blacklistedSolutions);
+
+        console.log('Solutions:');
+        console.log(solutions);
       });
     return () => unsubscribe();
   }, []);
-
-  // Updates the user's scores on login.
-  useEffect(() => {}, [props.loggedIn]);
 
   function updateGameState(newState) {
     firebase
@@ -73,6 +91,46 @@ function MultiplayerGame(props) {
 
   function stopGame() {
     updateGameState('stopped');
+  }
+
+  const handleNotificationOpen = msg => {
+    setMessage(msg);
+    setNotificationOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setNotificationOpen(false);
+  };
+
+  function uploadWordFound(word) {
+    var gameDocRef = firebase
+      .firestore()
+      .collection('multiplayer')
+      .doc(game);
+
+    firebase
+      .firestore()
+      .runTransaction(function(transaction) {
+        return transaction.get(gameDocRef).then(function(gameDoc) {
+          if (!gameDoc.exists) {
+            throw 'Document does not exist!';
+          }
+
+          var newWordsFounds = gameDoc.data()['words-found'];
+          if (newWordsFounds[props.user.displayName] == null)
+            newWordsFounds[props.user.displayName] = [];
+          newWordsFounds[props.user.displayName].push(word);
+          transaction.update(gameDocRef, { 'words-found': newWordsFounds });
+          return newWordsFounds;
+        });
+      })
+      .then(function(newDoc) {
+        console.log('Words found updated!');
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
   }
 
   if (gameState === 'loading') return <CircularIndeterminate />;
@@ -133,10 +191,33 @@ function MultiplayerGame(props) {
           <div></div>
         )}
         <SquareGrid data={board} />
+        <WordInput
+          active={gameState === 'active'}
+          onEnter={word => {
+            word = word.trim().toLowerCase();
+            console.log(word);
+            if (solutions.has(word))
+              if (blacklistedSolutions.has(word)) {
+                setSeverity('warning');
+                handleNotificationOpen('Word already found: ' + word);
+              } else {
+                uploadWordFound(word);
+                setSeverity('success');
+                handleNotificationOpen("Nice! You found '" + word + "'");
+              }
+          }}
+        />
         <MultiplayerLeaderboard data={wordsFoundAll} />
         <div style={{ height: 16 }}></div>
         <Typography variant="h6">Words found so far</Typography>
         <MultiplayerWordsFound data={wordsFoundAll} />
+        <Notification
+          notificationOpen={notificationOpen}
+          handleClose={handleClose}
+          severity={severity}
+          message={message}
+          horizontal="right"
+        />
       </Grid>
     </div>
   );
