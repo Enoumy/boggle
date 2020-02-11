@@ -170,12 +170,6 @@ function RandomGame() {
           )}
         </div>
       )}
-      <Notification
-        notificationOpen={notificationOpen}
-        handleClose={handleClose}
-        severity={severity}
-        message={message}
-      />
     </div>
   );
 }
