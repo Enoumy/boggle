@@ -11,6 +11,7 @@ import CircularIndeterminate from './Loading.js';
 import SquareGrid from './Grid.js';
 import StartButton from './StartButton.js';
 import MultiplayerWordsFound from './MultiplayerWordsFound.js';
+import MultiplayerLeaderboard from './MultiplayerLeaderboard.js';
 import firebase from 'firebase';
 
 function MultiplayerGame(props) {
@@ -132,7 +133,9 @@ function MultiplayerGame(props) {
           <div></div>
         )}
         <SquareGrid data={board} />
-        <Typography variant="h7">Words found so far</Typography>
+        <MultiplayerLeaderboard data={wordsFoundAll} />
+        <div style={{ height: 16 }}></div>
+        <Typography variant="h6">Words found so far</Typography>
         <MultiplayerWordsFound data={wordsFoundAll} />
       </Grid>
     </div>

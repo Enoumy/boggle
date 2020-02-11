@@ -51,7 +51,7 @@ function Leaderboard(props) {
   return (
     <div marginTop={32}>
       <Typography variant="h6" align="center">
-        Rankings
+        Leaderboard
       </Typography>
       <TableContainer component={Paper}>
         <Table
