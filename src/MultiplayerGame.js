@@ -47,7 +47,6 @@ function MultiplayerGame(props) {
           setGameState('notFound');
           return;
         }
-        console.log(doc.data());
         let data = doc.data();
         let newBoard = stringToBoard(data['board']);
         setBoard(newBoard);
@@ -56,12 +55,6 @@ function MultiplayerGame(props) {
         setWordsFoundAll(data['words-found']);
         blacklistedSolutions = aggregateFoundSolutions(data['words-found']);
         solutions = new Set(findAllSolutions(newBoard, dictionary));
-
-        console.log('Blacklisted solutions:');
-        console.log(blacklistedSolutions);
-
-        console.log('Solutions:');
-        console.log(solutions);
       });
     return () => unsubscribe();
   }, []);
@@ -195,7 +188,6 @@ function MultiplayerGame(props) {
           active={gameState === 'active'}
           onEnter={word => {
             word = word.trim().toLowerCase();
-            console.log(word);
             if (solutions.has(word))
               if (blacklistedSolutions.has(word)) {
                 setSeverity('warning');

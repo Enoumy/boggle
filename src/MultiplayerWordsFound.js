@@ -38,7 +38,6 @@ function MultiplayerWordsFound(props) {
   useEffect(() => {
     let newData = wordsFoundDictionaryToMultiplayerWordsFound(props.data);
     setWordData(newData);
-    console.log(newData);
   }, [props.data]);
 
   return (

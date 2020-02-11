@@ -27,13 +27,9 @@ function App() {
       <Router>
         <Navigation
           setUser={user => {
-            console.log('Received!');
-            console.log(user);
             setUser(user);
           }}
           setLoggedIn={status => {
-            console.log('Received!');
-            console.log(status);
             setLoggedIn(status);
           }}
           user={user}
