@@ -35,7 +35,7 @@ function SizeSelector(props) {
           valueLabelDisplay="auto"
           step={1}
           marks
-          min={1}
+          min={2}
           max={10}
           onChangeCommitted={(event, value) => {
             if (value !== gridSize) {
